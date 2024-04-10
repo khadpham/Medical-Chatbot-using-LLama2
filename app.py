@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from src.helper import download_hugging_face_embeddings
-from langchain.vectorstores import Pinecone
+from langchain_pinecone import PineconeVectorStore
 import pinecone
 from langchain.prompts import PromptTemplate
 from langchain.llms import CTransformers
@@ -20,12 +20,12 @@ PINECONE_API_ENV = os.environ.get("PINECONE_API_ENV")
 embeddings = download_hugging_face_embeddings()
 
 # Initializing the Pinecone
-pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_API_ENV)
+# pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_API_ENV)
 
 index_name = "medical-bot"
 
 # Loading the index
-docsearch = Pinecone.from_existing_index(index_name, embeddings)
+docsearch = PineconeVectorStore.from_existing_index(index_name, embeddings)
 
 
 PROMPT = PromptTemplate(
